@@ -1,0 +1,190 @@
+# Entity: organization
+
+main: kit: entity: organization: {
+
+  alias: field: {}
+
+  fields: {
+    banner_url: {
+      h: "Banner Url"
+      n: "banner_url"
+      r: false
+      t: "`$STRING`"
+    }
+    brand_color: {
+      h: "Brand Color"
+      n: "brand_color"
+      r: false
+      t: "`$STRING`"
+    }
+    company_type: {
+      h: "Company Type"
+      n: "company_type"
+      r: false
+      t: "`$STRING`"
+    }
+    contact_email: {
+      h: "Contact Email"
+      n: "contact_email"
+      r: false
+      t: "`$STRING`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      t: "`$STRING`"
+    }
+    employee_count_range: {
+      h: "Employee Count Range"
+      n: "employee_count_range"
+      r: false
+      t: "`$STRING`"
+    }
+    features: {
+      h: "Features"
+      n: "features"
+      r: false
+      t: "`$OBJECT`"
+    }
+    founded_year: {
+      h: "Founded Year"
+      n: "founded_year"
+      r: false
+      t: "`$INTEGER`"
+    }
+    headquarters: {
+      h: "Headquarters"
+      n: "headquarters"
+      r: false
+      t: "`$STRING`"
+    }
+    headquarters_city: {
+      h: "Headquarters City"
+      n: "headquarters_city"
+      r: false
+      t: "`$STRING`"
+    }
+    headquarters_country: {
+      h: "Headquarters Country"
+      n: "headquarters_country"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "uuid"
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$STRING`"
+    }
+    industry: {
+      h: "Industry"
+      n: "industry"
+      r: false
+      t: "`$STRING`"
+    }
+    job_count: {
+      h: "Job Count"
+      n: "job_count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    linkedin_url: {
+      h: "Linkedin Url"
+      n: "linkedin_url"
+      r: false
+      t: "`$STRING`"
+    }
+    logo_url: {
+      h: "Logo Url"
+      n: "logo_url"
+      r: false
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      t: "`$STRING`"
+    }
+    slug: {
+      h: "Slug"
+      n: "slug"
+      r: true
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+    website_url: {
+      h: "Website Url"
+      n: "website_url"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "organization"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /job-boards/{company}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "worklittle"
+                k: "param"
+                n: "company"
+                or: "company"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/job-boards/{company}"
+          q: {
+            exist: [
+              "company"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "job-boards"
+            }
+            {
+              var: "company"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.organization`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

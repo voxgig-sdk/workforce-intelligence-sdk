@@ -1,0 +1,26 @@
+# BasicBoardFlow
+
+main: kit: flow: BasicBoardFlow:
+{
+  entity: "board",
+  kind: "basic",
+  name: "BasicBoardFlow",
+  step: [
+    {
+      m: {
+        company: "company01"
+      }
+
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "board_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicBoardFlow"
+}

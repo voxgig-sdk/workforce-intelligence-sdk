@@ -1,0 +1,36 @@
+{
+  "existing": {
+    "health": {
+      "HEALTH00": {
+        "status": "s14",
+        "version": "s15",
+        "id": "HEALTH00"
+      },
+      "HEALTH01": {
+        "status": "s28",
+        "version": "s29",
+        "id": "HEALTH01"
+      },
+      "HEALTH02": {
+        "status": "s3c",
+        "version": "s3d",
+        "id": "HEALTH02"
+      }
+    }
+  },
+  "new": {
+    "health": {
+      "health_ref01": {
+        "status": "s50",
+        "version": "s51"
+      }
+    }
+  },
+  "requests": {
+    "GET /health": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

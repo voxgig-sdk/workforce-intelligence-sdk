@@ -1,0 +1,1189 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Workforce Intelligence API",
+    "version": "1.0.0",
+    "description": "The keyless part of the Worklittle API (api.worklittle.com): the health check and the public careers-board routes an employer's published jobs are served from. Knowledge source: the docs at https://docs.worklittle.com (pages 'Public job board' and 'OpenAPI'), the vendor's own OpenAPI 3.1 files https://docs.worklittle.com/openapi/openapi.yaml and job-boards.yaml (which give paths and parameters but no response schemas), and live GET probes on 2026-10-23, from which every response schema here is taken. Excluded: market-wide job search (/jobs, /companies, /jobs/stats and the rest) returned 401 without a Bearer key, and every business/ATS, apply, resume and webhook route needs a key or is a POST. Unverified: only one board (slug 'worklittle', holding a single job) could be found to probe, so the shapes of salary and visa_sponsorship (null in every probe), the nullability of most organization fields, cursor paging, and the filters were not exercised against varied data. The example job will stop working if Worklittle closes that role."
+  },
+  "servers": [
+    {
+      "url": "https://api.worklittle.com"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Service status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-boards/{company}": {
+      "get": {
+        "operationId": "getOrganizationProfile",
+        "summary": "Get a job board's organization profile",
+        "description": "Branding and profile of the organization behind a public job board, with its feature toggles and open job count.",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "description": "Organization slug of a Worklittle job board. 'worklittle' (Worklittle's own board) is the only slug verified live; 'acme', used in the docs, returns 404.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "worklittle"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown organization or job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-boards/{company}/board": {
+      "get": {
+        "operationId": "getBoard",
+        "summary": "Get a job board bundle",
+        "description": "Organization profile, brand and the first page of jobs in one call. With include=facets the response also carries facet counts.",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "description": "Organization slug of a Worklittle job board. 'worklittle' (Worklittle's own board) is the only slug verified live; 'acme', used in the docs, returns 404.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "worklittle"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            },
+            "example": 25
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Opaque cursor from meta.next_cursor of the previous page.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Free-text search.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "required": false,
+            "description": "Department filter.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workplace_type",
+            "in": "query",
+            "required": false,
+            "description": "Workplace type filter.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "remote",
+                "hybrid",
+                "on_site"
+              ]
+            }
+          },
+          {
+            "name": "employment_type",
+            "in": "query",
+            "required": false,
+            "description": "Employment type filter, e.g. full_time or temporary.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "description": "Location filter.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "description": "Set to 'facets' to add facet counts.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "facets"
+              ]
+            },
+            "example": "facets"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board bundle.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Board"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown organization or job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-boards/{company}/jobs": {
+      "get": {
+        "operationId": "listJobs",
+        "summary": "List a board's published jobs",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "description": "Organization slug of a Worklittle job board. 'worklittle' (Worklittle's own board) is the only slug verified live; 'acme', used in the docs, returns 404.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "worklittle"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            },
+            "example": 25
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Opaque cursor from meta.next_cursor of the previous page.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Free-text search.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "required": false,
+            "description": "Department filter.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workplace_type",
+            "in": "query",
+            "required": false,
+            "description": "Workplace type filter.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "remote",
+                "hybrid",
+                "on_site"
+              ]
+            }
+          },
+          {
+            "name": "employment_type",
+            "in": "query",
+            "required": false,
+            "description": "Employment type filter, e.g. full_time or temporary.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "description": "Location filter.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One page of job summaries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobList"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown organization or job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-boards/{company}/facets": {
+      "get": {
+        "operationId": "getFacet",
+        "summary": "Get a board's filter facets",
+        "description": "Counts of the board's jobs by department, workplace type and employment type.",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "description": "Organization slug of a Worklittle job board. 'worklittle' (Worklittle's own board) is the only slug verified live; 'acme', used in the docs, returns 404.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "worklittle"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Free-text search.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "description": "Location filter.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Facet counts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Facet"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown organization or job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-boards/{company}/jobs/{idOrSlug}": {
+      "get": {
+        "operationId": "getJob",
+        "summary": "Get one published job",
+        "description": "Full job detail including the application form fields and parsed description sections.",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "description": "Organization slug of a Worklittle job board. 'worklittle' (Worklittle's own board) is the only slug verified live; 'acme', used in the docs, returns 404.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "worklittle"
+          },
+          {
+            "name": "idOrSlug",
+            "in": "path",
+            "required": true,
+            "description": "Job public slug, public job id, or posted job id, as returned by listJobs.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "applied-ai-engineer-internship"
+          },
+          {
+            "name": "preview",
+            "in": "query",
+            "required": false,
+            "description": "Employer preview_key for unpublished jobs (not probed).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job detail.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown organization or job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-boards/{company}/jobs/{idOrSlug}/json-ld": {
+      "get": {
+        "operationId": "getJobPosting",
+        "summary": "Get a job's schema.org JobPosting markup",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "description": "Organization slug of a Worklittle job board. 'worklittle' (Worklittle's own board) is the only slug verified live; 'acme', used in the docs, returns 404.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "worklittle"
+          },
+          {
+            "name": "idOrSlug",
+            "in": "path",
+            "required": true,
+            "description": "Job public slug, public job id, or posted job id, as returned by listJobs.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "applied-ai-engineer-internship"
+          },
+          {
+            "name": "canonical_url",
+            "in": "query",
+            "required": false,
+            "description": "Canonical URL to put in the markup (not probed).",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JobPosting JSON-LD plus parsed description sections.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPosting"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown organization or job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Health": {
+        "type": "object",
+        "required": [
+          "status",
+          "version"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "NOT_FOUND"
+              },
+              "message": {
+                "type": "string",
+                "example": "Organization not found"
+              },
+              "documentation_url": {
+                "type": "string",
+                "description": "Present on auth and quota errors."
+              }
+            }
+          }
+        }
+      },
+      "RateLimit": {
+        "type": "object",
+        "properties": {
+          "limit_per_minute": {
+            "type": "integer",
+            "example": 120
+          },
+          "remaining": {
+            "type": "integer",
+            "description": "-1 for unauthenticated callers in every probe.",
+            "example": -1
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "next_cursor": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cursor for the next page; null on the last page. Present on list responses only."
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total matching jobs. Present on list responses only."
+          },
+          "rate_limit": {
+            "$ref": "#/components/schemas/RateLimit"
+          }
+        }
+      },
+      "Features": {
+        "type": "object",
+        "properties": {
+          "resume_autofill": {
+            "type": "boolean"
+          },
+          "similar_job_alerts": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Organization": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Worklittle"
+          },
+          "slug": {
+            "type": "string",
+            "example": "worklittle"
+          },
+          "logo_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "banner_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "website_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "brand_color": {
+            "type": "string",
+            "nullable": true,
+            "example": "#0099FF"
+          },
+          "headquarters": {
+            "type": "string",
+            "nullable": true
+          },
+          "contact_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "industry": {
+            "type": "string",
+            "nullable": true
+          },
+          "company_type": {
+            "type": "string",
+            "nullable": true,
+            "example": "nonprofit"
+          },
+          "employee_count_range": {
+            "type": "string",
+            "nullable": true,
+            "example": "11-50"
+          },
+          "linkedin_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "founded_year": {
+            "type": "integer",
+            "nullable": true,
+            "example": 2025
+          },
+          "headquarters_city": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters_country": {
+            "type": "string",
+            "nullable": true,
+            "example": "US"
+          },
+          "features": {
+            "$ref": "#/components/schemas/Features"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "job_count": {
+            "type": "integer"
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "logo_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "website_url": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "JobSource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "worklittle_posted"
+          },
+          "name": {
+            "type": "string",
+            "example": "Worklittle"
+          }
+        }
+      },
+      "JobSummary": {
+        "type": "object",
+        "required": [
+          "id",
+          "slug",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Public job id.",
+            "example": "4955852915"
+          },
+          "posted_job_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "slug": {
+            "type": "string",
+            "example": "applied-ai-engineer-internship"
+          },
+          "url_path": {
+            "type": "string",
+            "example": "/job-boards/worklittle/jobs/applied-ai-engineer-internship"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "apply_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "source_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "employment_type": {
+            "type": "string",
+            "nullable": true,
+            "example": "temporary"
+          },
+          "workplace_type": {
+            "type": "string",
+            "nullable": true,
+            "example": "remote"
+          },
+          "salary": {
+            "description": "Any type; null in every probe, shape unverified."
+          },
+          "visa_sponsorship": {
+            "description": "Any type; null in every probe, shape unverified."
+          },
+          "accepting_applicants": {
+            "type": "boolean"
+          },
+          "roles_to_fill": {
+            "type": "integer",
+            "nullable": true
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "company": {
+            "$ref": "#/components/schemas/Company"
+          },
+          "source": {
+            "$ref": "#/components/schemas/JobSource"
+          }
+        }
+      },
+      "LabelSpan": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "variant": {
+            "type": "string",
+            "example": "text"
+          },
+          "bold": {
+            "type": "boolean"
+          },
+          "italic": {
+            "type": "boolean"
+          },
+          "underline": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ApplicationField": {
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "required"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "builtin",
+              "custom"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "example": "email"
+          },
+          "builtin": {
+            "type": "string",
+            "description": "Built-in field name (kind=builtin only), e.g. name, email, phone, resume_file."
+          },
+          "type": {
+            "type": "string",
+            "description": "Input type (kind=custom only), e.g. long_text."
+          },
+          "label": {
+            "type": "object",
+            "properties": {
+              "lines": {
+                "type": "array",
+                "description": "Rich-text label: a list of lines, each a list of styled spans.",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelSpan"
+                  }
+                }
+              }
+            }
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DescriptionSection": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "paragraphs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bullets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DescriptionSectionsMeta": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "fallback",
+              "unavailable"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "heuristic",
+              "gemini",
+              "plain",
+              "cache"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "JobDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/JobSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "nullable": true,
+                "description": "Plain-text description."
+              },
+              "description_html": {
+                "type": "string",
+                "nullable": true
+              },
+              "summary": {
+                "type": "string",
+                "nullable": true,
+                "description": "AI summary; null in probes."
+              },
+              "application_fields": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ApplicationField"
+                }
+              },
+              "description_sections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DescriptionSection"
+                }
+              },
+              "description_sections_meta": {
+                "$ref": "#/components/schemas/DescriptionSectionsMeta"
+              },
+              "features": {
+                "$ref": "#/components/schemas/Features"
+              }
+            }
+          }
+        ]
+      },
+      "Job": {
+        "type": "object",
+        "required": [
+          "job"
+        ],
+        "properties": {
+          "company": {
+            "type": "string",
+            "description": "Board slug.",
+            "example": "worklittle"
+          },
+          "job": {
+            "$ref": "#/components/schemas/JobDetail"
+          },
+          "features": {
+            "$ref": "#/components/schemas/Features"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        }
+      },
+      "JobList": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "company": {
+            "type": "string",
+            "description": "Board slug.",
+            "example": "worklittle"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobSummary"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        }
+      },
+      "FacetBucket": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          }
+        }
+      },
+      "FacetSet": {
+        "type": "object",
+        "properties": {
+          "department": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FacetBucket"
+            }
+          },
+          "workplace_type": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FacetBucket"
+            }
+          },
+          "employment_type": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FacetBucket"
+            }
+          }
+        }
+      },
+      "Facet": {
+        "type": "object",
+        "required": [
+          "facets"
+        ],
+        "properties": {
+          "company": {
+            "type": "string",
+            "example": "worklittle"
+          },
+          "facets": {
+            "$ref": "#/components/schemas/FacetSet"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        }
+      },
+      "Board": {
+        "type": "object",
+        "required": [
+          "organization",
+          "jobs"
+        ],
+        "properties": {
+          "organization": {
+            "$ref": "#/components/schemas/Organization"
+          },
+          "brand": {
+            "$ref": "#/components/schemas/Organization"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobSummary"
+            }
+          },
+          "facets": {
+            "$ref": "#/components/schemas/FacetSet"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        }
+      },
+      "JobPostingMarkup": {
+        "type": "object",
+        "description": "schema.org JobPosting object for Google job search.",
+        "properties": {
+          "@context": {
+            "type": "string",
+            "example": "https://schema.org/"
+          },
+          "@type": {
+            "type": "string",
+            "example": "JobPosting"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "description": "HTML."
+          },
+          "datePosted": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "employmentType": {
+            "type": "string",
+            "example": "TEMPORARY"
+          },
+          "hiringOrganization": {
+            "type": "object",
+            "properties": {
+              "@type": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "sameAs": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              }
+            }
+          },
+          "jobLocation": {
+            "type": "object",
+            "properties": {
+              "@type": {
+                "type": "string"
+              },
+              "address": {
+                "type": "object",
+                "properties": {
+                  "@type": {
+                    "type": "string"
+                  },
+                  "addressLocality": {
+                    "type": "string"
+                  },
+                  "addressRegion": {
+                    "type": "string"
+                  },
+                  "addressCountry": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "directApply": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "JobPosting": {
+        "type": "object",
+        "required": [
+          "json_ld"
+        ],
+        "properties": {
+          "company": {
+            "type": "string",
+            "example": "worklittle"
+          },
+          "json_ld": {
+            "$ref": "#/components/schemas/JobPostingMarkup"
+          },
+          "description_sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DescriptionSection"
+            }
+          },
+          "description_sections_meta": {
+            "$ref": "#/components/schemas/DescriptionSectionsMeta"
+          }
+        }
+      },
+      "OrganizationResponse": {
+        "type": "object",
+        "required": [
+          "organization"
+        ],
+        "properties": {
+          "organization": {
+            "$ref": "#/components/schemas/Organization"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        }
+      }
+    }
+  }
+}

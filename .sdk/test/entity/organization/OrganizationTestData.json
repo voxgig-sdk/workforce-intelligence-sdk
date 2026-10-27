@@ -1,0 +1,107 @@
+{
+  "existing": {
+    "organization": {
+      "ORGANIZATION00": {
+        "banner_url": "sc8",
+        "brand_color": "sc9",
+        "company_type": "sca",
+        "contact_email": "scb",
+        "description": "scc",
+        "employee_count_range": "scd",
+        "features": {},
+        "founded_year": 207,
+        "headquarters": "sd0",
+        "headquarters_city": "sd1",
+        "headquarters_country": "sd2",
+        "id": "ORGANIZATION00",
+        "industry": "sd4",
+        "job_count": 213,
+        "linkedin_url": "sd6",
+        "logo_url": "sd7",
+        "name": "sd8",
+        "slug": "sd9",
+        "updated_at": "sda",
+        "website_url": "sdb",
+        "company": "COMPANY01"
+      },
+      "ORGANIZATION01": {
+        "banner_url": "s190",
+        "brand_color": "s191",
+        "company_type": "s192",
+        "contact_email": "s193",
+        "description": "s194",
+        "employee_count_range": "s195",
+        "features": {},
+        "founded_year": 407,
+        "headquarters": "s198",
+        "headquarters_city": "s199",
+        "headquarters_country": "s19a",
+        "id": "ORGANIZATION01",
+        "industry": "s19c",
+        "job_count": 413,
+        "linkedin_url": "s19e",
+        "logo_url": "s19f",
+        "name": "s1a0",
+        "slug": "s1a1",
+        "updated_at": "s1a2",
+        "website_url": "s1a3",
+        "company": "COMPANY01"
+      },
+      "ORGANIZATION02": {
+        "banner_url": "s258",
+        "brand_color": "s259",
+        "company_type": "s25a",
+        "contact_email": "s25b",
+        "description": "s25c",
+        "employee_count_range": "s25d",
+        "features": {},
+        "founded_year": 607,
+        "headquarters": "s260",
+        "headquarters_city": "s261",
+        "headquarters_country": "s262",
+        "id": "ORGANIZATION02",
+        "industry": "s264",
+        "job_count": 613,
+        "linkedin_url": "s266",
+        "logo_url": "s267",
+        "name": "s268",
+        "slug": "s269",
+        "updated_at": "s26a",
+        "website_url": "s26b",
+        "company": "COMPANY01"
+      }
+    }
+  },
+  "new": {
+    "organization": {
+      "organization_ref01": {
+        "banner_url": "s320",
+        "brand_color": "s321",
+        "company_type": "s322",
+        "contact_email": "s323",
+        "description": "s324",
+        "employee_count_range": "s325",
+        "features": {},
+        "founded_year": 807,
+        "headquarters": "s328",
+        "headquarters_city": "s329",
+        "headquarters_country": "s32a",
+        "industry": "s32c",
+        "job_count": 813,
+        "linkedin_url": "s32e",
+        "logo_url": "s32f",
+        "name": "s330",
+        "slug": "s331",
+        "updated_at": "s332",
+        "website_url": "s333"
+      }
+    }
+  },
+  "requests": {
+    "GET /job-boards/{company}": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

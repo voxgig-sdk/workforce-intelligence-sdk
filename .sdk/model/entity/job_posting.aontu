@@ -1,0 +1,116 @@
+# Entity: job_posting
+
+main: kit: entity: job_posting: {
+
+  alias: field: {}
+
+  fields: {
+    bullets: {
+      h: "Bullets"
+      n: "bullets"
+      r: false
+      t: "`$ARRAY`"
+    }
+    paragraphs: {
+      h: "Paragraphs"
+      n: "paragraphs"
+      r: false
+      t: "`$ARRAY`"
+    }
+    title: {
+      h: "Title"
+      n: "title"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  name: "job_posting"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /job-boards/{company}/jobs/{idOrSlug}/json-ld"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "worklittle"
+                k: "param"
+                n: "company"
+                or: "company"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "applied-ai-engineer-internship"
+                k: "param"
+                n: "id_or_slug"
+                or: "idOrSlug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "canonical_url"
+                or: "canonical_url"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/job-boards/{company}/jobs/{idOrSlug}/json-ld"
+          q: {
+            exist: [
+              "company"
+              "id_or_slug"
+            ]
+          }
+          r: {
+            param: {
+              idOrSlug: "id_or_slug"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "job-boards"
+            }
+            {
+              var: "company"
+            }
+            {
+              lit: "jobs"
+            }
+            {
+              var: "id_or_slug"
+            }
+            {
+              lit: "json-ld"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.job")]
+  ]
+
+}

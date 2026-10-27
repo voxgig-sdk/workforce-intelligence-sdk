@@ -1,0 +1,27 @@
+# BasicJobPostingFlow
+
+main: kit: flow: BasicJobPostingFlow:
+{
+  entity: "job_posting",
+  kind: "basic",
+  name: "BasicJobPostingFlow",
+  step: [
+    {
+      m: {
+        company: "company01",
+        id_or_slug: "id_or_slug01"
+      }
+
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "job_posting_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicJobPostingFlow"
+}

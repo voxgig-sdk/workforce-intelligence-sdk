@@ -1,0 +1,100 @@
+# Entity: facet
+
+main: kit: entity: facet: {
+
+  alias: field: {}
+
+  fields: {
+    company: {
+      h: "Company"
+      n: "company"
+      r: false
+      t: "`$STRING`"
+    }
+    facets: {
+      h: "Facets"
+      n: "facets"
+      r: true
+      t: "`$OBJECT`"
+    }
+    meta: {
+      h: "Meta"
+      n: "meta"
+      r: false
+      t: "`$OBJECT`"
+    }
+  }
+
+  name: "facet"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /job-boards/{company}/facets"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "worklittle"
+                k: "param"
+                n: "company"
+                or: "company"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "location"
+                or: "location"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "q"
+                or: "q"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/job-boards/{company}/facets"
+          q: {
+            exist: [
+              "company"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "job-boards"
+            }
+            {
+              var: "company"
+            }
+            {
+              lit: "facets"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

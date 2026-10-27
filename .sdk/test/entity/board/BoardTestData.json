@@ -1,0 +1,100 @@
+{
+  "existing": {
+    "board": {
+      "BOARD00": {
+        "accepting_applicants": true,
+        "apply_url": "sbf",
+        "company": {},
+        "department": "sc1",
+        "employment_type": "sc2",
+        "id": "BOARD00",
+        "locations": [],
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "sc6",
+        "roles_to_fill": 199,
+        "salary": "sc8",
+        "slug": "sc9",
+        "source": {},
+        "source_url": "scb",
+        "title": "scc",
+        "updated_at": "scd",
+        "url_path": "sce",
+        "visa_sponsorship": "scf",
+        "workplace_type": "sd0"
+      },
+      "BOARD01": {
+        "accepting_applicants": true,
+        "apply_url": "s17d",
+        "company": {},
+        "department": "s17f",
+        "employment_type": "s180",
+        "id": "BOARD01",
+        "locations": [],
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "s184",
+        "roles_to_fill": 389,
+        "salary": "s186",
+        "slug": "s187",
+        "source": {},
+        "source_url": "s189",
+        "title": "s18a",
+        "updated_at": "s18b",
+        "url_path": "s18c",
+        "visa_sponsorship": "s18d",
+        "workplace_type": "s18e"
+      },
+      "BOARD02": {
+        "accepting_applicants": true,
+        "apply_url": "s23b",
+        "company": {},
+        "department": "s23d",
+        "employment_type": "s23e",
+        "id": "BOARD02",
+        "locations": [],
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "s242",
+        "roles_to_fill": 579,
+        "salary": "s244",
+        "slug": "s245",
+        "source": {},
+        "source_url": "s247",
+        "title": "s248",
+        "updated_at": "s249",
+        "url_path": "s24a",
+        "visa_sponsorship": "s24b",
+        "workplace_type": "s24c"
+      }
+    }
+  },
+  "new": {
+    "board": {
+      "board_ref01": {
+        "accepting_applicants": true,
+        "apply_url": "s2f9",
+        "company": {},
+        "department": "s2fb",
+        "employment_type": "s2fc",
+        "locations": [],
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "s300",
+        "roles_to_fill": 769,
+        "salary": "s302",
+        "slug": "s303",
+        "source": {},
+        "source_url": "s305",
+        "title": "s306",
+        "updated_at": "s307",
+        "url_path": "s308",
+        "visa_sponsorship": "s309",
+        "workplace_type": "s30a"
+      }
+    }
+  },
+  "requests": {
+    "GET /job-boards/{company}/board": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

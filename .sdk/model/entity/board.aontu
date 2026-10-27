@@ -1,0 +1,251 @@
+# Entity: board
+
+main: kit: entity: board: {
+
+  alias: field: {}
+
+  fields: {
+    accepting_applicants: {
+      h: "Accepting Applicants"
+      n: "accepting_applicants"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    apply_url: {
+      h: "Apply Url"
+      n: "apply_url"
+      r: false
+      t: "`$STRING`"
+    }
+    company: {
+      h: "Company"
+      n: "company"
+      r: false
+      t: "`$OBJECT`"
+    }
+    department: {
+      h: "Department"
+      n: "department"
+      r: false
+      t: "`$STRING`"
+    }
+    employment_type: {
+      h: "Employment Type"
+      n: "employment_type"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Public job id."
+      t: "`$STRING`"
+    }
+    locations: {
+      h: "Locations"
+      n: "locations"
+      r: false
+      t: "`$ARRAY`"
+    }
+    posted_job_id: {
+      fo: "uuid"
+      h: "Posted Job Id"
+      n: "posted_job_id"
+      r: false
+      t: "`$STRING`"
+    }
+    published_at: {
+      fo: "date-time"
+      h: "Published At"
+      n: "published_at"
+      r: false
+      t: "`$STRING`"
+    }
+    roles_to_fill: {
+      h: "Roles To Fill"
+      n: "roles_to_fill"
+      r: false
+      t: "`$INTEGER`"
+    }
+    salary: {
+      h: "Salary"
+      n: "salary"
+      r: false
+      sh: "Any type; null in every probe, shape unverified."
+      t: "`$ANY`"
+    }
+    slug: {
+      h: "Slug"
+      n: "slug"
+      r: true
+      t: "`$STRING`"
+    }
+    source: {
+      h: "Source"
+      n: "source"
+      r: false
+      t: "`$OBJECT`"
+    }
+    source_url: {
+      h: "Source Url"
+      n: "source_url"
+      r: false
+      t: "`$STRING`"
+    }
+    title: {
+      h: "Title"
+      n: "title"
+      r: true
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+    url_path: {
+      h: "Url Path"
+      n: "url_path"
+      r: false
+      t: "`$STRING`"
+    }
+    visa_sponsorship: {
+      h: "Visa Sponsorship"
+      n: "visa_sponsorship"
+      r: false
+      sh: "Any type; null in every probe, shape unverified."
+      t: "`$ANY`"
+    }
+    workplace_type: {
+      h: "Workplace Type"
+      n: "workplace_type"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "board"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /job-boards/{company}/board"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "worklittle"
+                k: "param"
+                n: "company"
+                or: "company"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "cursor"
+                or: "cursor"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "department"
+                or: "department"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "employment_type"
+                or: "employment_type"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "facets"
+                k: "query"
+                n: "include"
+                or: "include"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 25
+                k: "query"
+                n: "limit"
+                or: "limit"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "location"
+                or: "location"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "q"
+                or: "q"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "workplace_type"
+                or: "workplace_type"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/job-boards/{company}/board"
+          q: {
+            exist: [
+              "company"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "job-boards"
+            }
+            {
+              var: "company"
+            }
+            {
+              lit: "board"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.jobs`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

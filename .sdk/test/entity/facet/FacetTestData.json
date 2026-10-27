@@ -1,0 +1,40 @@
+{
+  "existing": {
+    "facet": {
+      "FACET00": {
+        "company": "s1e",
+        "facets": {},
+        "meta": {},
+        "id": "FACET00"
+      },
+      "FACET01": {
+        "company": "s3c",
+        "facets": {},
+        "meta": {},
+        "id": "FACET01"
+      },
+      "FACET02": {
+        "company": "s5a",
+        "facets": {},
+        "meta": {},
+        "id": "FACET02"
+      }
+    }
+  },
+  "new": {
+    "facet": {
+      "facet_ref01": {
+        "company": "s78",
+        "facets": {},
+        "meta": {}
+      }
+    }
+  },
+  "requests": {
+    "GET /job-boards/{company}/facets": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

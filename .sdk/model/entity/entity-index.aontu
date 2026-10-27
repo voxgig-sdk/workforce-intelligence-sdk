@@ -1,0 +1,8 @@
+# Entity Models
+
+@"./board.aontu"
+@"./facet.aontu"
+@"./health.aontu"
+@"./job.aontu"
+@"./job_posting.aontu"
+@"./organization.aontu"

@@ -1,0 +1,32 @@
+# BasicFacetFlow
+
+main: kit: flow: BasicFacetFlow:
+{
+  entity: "facet",
+  kind: "basic",
+  name: "BasicFacetFlow",
+  step: [
+    {
+      i: {
+        ref: "facet_ref01",
+        srcdatavar: "facet_ref01_data",
+        suffix: "_dt0"
+      }
+
+      m: {
+        id: "facet01"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-facet_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicFacetFlow"
+}

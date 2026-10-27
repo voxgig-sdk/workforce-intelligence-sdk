@@ -1,0 +1,21 @@
+# API Information
+
+
+main: {
+  kit: {
+    info: {
+      auth: false
+      description: "The keyless part of the Worklittle API (api.worklittle.com): the health check and the public careers-board routes an employer's published jobs are served from. Knowledge source: the docs at https://docs.worklittle.com (pages 'Public job board' and 'OpenAPI'), the vendor's own OpenAPI 3.1 files https://docs.worklittle.com/openapi/openapi.yaml and job-boards.yaml (which give paths and parameters but no response schemas), and live GET probes on 2026-10-23, from which every response schema here is taken. Excluded: market-wide job search (/jobs, /companies, /jobs/stats and the rest) returned 401 without a Bearer key, and every business/ATS, apply, resume and webhook route needs a key or is a POST. Unverified: only one board (slug 'worklittle', holding a single job) could be found to probe, so the shapes of salary and visa_sponsorship (null in every probe), the nullability of most organization fields, cursor paging, and the filters were not exercised against varied data. The example job will stop working if Worklittle closes that role."
+      servers: [
+        {
+          url: "https://api.worklittle.com"
+        }
+      ]
+      summary: "The keyless part of the Worklittle API (api.worklittle.com): the health check and the public careers-board routes an employer's published jobs are served from."
+      title: "Workforce Intelligence API"
+      version: "1.0.0"
+      website: "https://worklittle.com"
+    }
+  }
+}
+

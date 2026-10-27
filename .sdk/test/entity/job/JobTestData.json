@@ -1,0 +1,117 @@
+{
+  "existing": {
+    "job": {
+      "JOB00": {
+        "accepting_applicants": true,
+        "apply_url": "sdd",
+        "company": "sde",
+        "department": "sdf",
+        "employment_type": "se0",
+        "features": {},
+        "id": "JOB00",
+        "job": "se3",
+        "locations": [],
+        "meta": {},
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "se7",
+        "roles_to_fill": 232,
+        "salary": "se9",
+        "slug": "sea",
+        "source": {},
+        "source_url": "sec",
+        "title": "sed",
+        "updated_at": "see",
+        "url_path": "sef",
+        "visa_sponsorship": "sf0",
+        "workplace_type": "sf1"
+      },
+      "JOB01": {
+        "accepting_applicants": true,
+        "apply_url": "s1b9",
+        "company": "s1ba",
+        "department": "s1bb",
+        "employment_type": "s1bc",
+        "features": {},
+        "id": "JOB01",
+        "job": "s1bf",
+        "locations": [],
+        "meta": {},
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "s1c3",
+        "roles_to_fill": 452,
+        "salary": "s1c5",
+        "slug": "s1c6",
+        "source": {},
+        "source_url": "s1c8",
+        "title": "s1c9",
+        "updated_at": "s1ca",
+        "url_path": "s1cb",
+        "visa_sponsorship": "s1cc",
+        "workplace_type": "s1cd"
+      },
+      "JOB02": {
+        "accepting_applicants": true,
+        "apply_url": "s295",
+        "company": "s296",
+        "department": "s297",
+        "employment_type": "s298",
+        "features": {},
+        "id": "JOB02",
+        "job": "s29b",
+        "locations": [],
+        "meta": {},
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "s29f",
+        "roles_to_fill": 672,
+        "salary": "s2a1",
+        "slug": "s2a2",
+        "source": {},
+        "source_url": "s2a4",
+        "title": "s2a5",
+        "updated_at": "s2a6",
+        "url_path": "s2a7",
+        "visa_sponsorship": "s2a8",
+        "workplace_type": "s2a9"
+      }
+    }
+  },
+  "new": {
+    "job": {
+      "job_ref01": {
+        "accepting_applicants": true,
+        "apply_url": "s371",
+        "company": "s372",
+        "department": "s373",
+        "employment_type": "s374",
+        "features": {},
+        "job": "s377",
+        "locations": [],
+        "meta": {},
+        "posted_job_id": "POSTED_JOB01",
+        "published_at": "s37b",
+        "roles_to_fill": 892,
+        "salary": "s37d",
+        "slug": "s37e",
+        "source": {},
+        "source_url": "s380",
+        "title": "s381",
+        "updated_at": "s382",
+        "url_path": "s383",
+        "visa_sponsorship": "s384",
+        "workplace_type": "s385"
+      }
+    }
+  },
+  "requests": {
+    "GET /job-boards/{company}/jobs": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    },
+    "GET /job-boards/{company}/jobs/{idOrSlug}": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

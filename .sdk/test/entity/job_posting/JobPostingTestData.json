@@ -1,0 +1,43 @@
+{
+  "existing": {
+    "job_posting": {
+      "JOB_POSTING00": {
+        "bullets": [],
+        "paragraphs": [],
+        "title": "s20",
+        "company": "COMPANY01",
+        "id_or_slug": "ID_OR_SLUG01"
+      },
+      "JOB_POSTING01": {
+        "bullets": [],
+        "paragraphs": [],
+        "title": "s3e",
+        "company": "COMPANY01",
+        "id_or_slug": "ID_OR_SLUG01"
+      },
+      "JOB_POSTING02": {
+        "bullets": [],
+        "paragraphs": [],
+        "title": "s5c",
+        "company": "COMPANY01",
+        "id_or_slug": "ID_OR_SLUG01"
+      }
+    }
+  },
+  "new": {
+    "job_posting": {
+      "job_posting_ref01": {
+        "bullets": [],
+        "paragraphs": [],
+        "title": "s7a"
+      }
+    }
+  },
+  "requests": {
+    "GET /job-boards/{company}/jobs/{idOrSlug}/json-ld": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

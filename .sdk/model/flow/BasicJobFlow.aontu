@@ -1,0 +1,49 @@
+# BasicJobFlow
+
+main: kit: flow: BasicJobFlow:
+{
+  entity: "job",
+  kind: "basic",
+  name: "BasicJobFlow",
+  step: [
+    {
+      m: {
+        company: "company01"
+      }
+
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "job_ref01"
+          }
+        }
+      ]
+    }
+
+    {
+      i: {
+        ref: "job_ref01",
+        srcdatavar: "job_ref01_data",
+        suffix: "_dt0"
+      }
+
+      m: {
+        company: "company01",
+        id: "job01"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-job_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicJobFlow"
+}
